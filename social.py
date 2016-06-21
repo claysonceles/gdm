@@ -97,5 +97,5 @@ def plotUnweightedCommunities(G, k_clique, n_nodes):
 	nx.draw_networkx_labels(G,pos,font_size=10,font_family='sans-serif')
 
 	plt.axis('off')
-	plt.savefig("barabasi_albert_"+"comm_"+"k"+str(k_clique)+".png") # save as png
+	plt.savefig("unweighted_"+"comm_"+"k"+str(k_clique)+".png") # save as png
 	plt.close()
