@@ -12,6 +12,9 @@ colors = ["#ff0000","#ff8000","#ffbf00","#ffff00","#bfff00","#80ff00","#40ff00",
 def generateBASyntheticGraph(n_nodes,n_edges): #generates a synthetic graph using the barabasi-albert model
 	return nx.barabasi_albert_graph(n_nodes,n_edges);
 
+def generateGaussian(n_nodes,avg_cluster_size, var_cluster_size, p_in, p_out): #generates a synthetic graph using the barabasi-albert model
+	return nx.gaussian_random_partition_graph(n_nodes, avg_cluster_size, var_cluster_size, p_in, p_out);
+
 def readSocialGraph(dataset,n_nodes): # reads a social graph from file. Format: <Node1_ID> <Node2_ID> <0> <weight(integer)>
 	G=nx.Graph()
 

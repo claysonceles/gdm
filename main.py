@@ -15,8 +15,9 @@ dataset = sys.argv[1];
 socialGraph = soc.readSocialGraph(dataset,n_nodes)
 soc.plotWeightedCommunities(socialGraph,W_lim,k_clique,n_nodes)
 
-socialGraph = soc.generateBASyntheticGraph(400, 12)
-soc.plotUnweightedCommunities(socialGraph,4,n_nodes)
+socialGraph = soc.generateGaussian(200,8, 2,0.4,0.1);
+#socialGraph = soc.generateBASyntheticGraph(400, 12)
+soc.plotUnweightedCommunities(socialGraph,5,n_nodes)
 
 		#plt.show() # display
 
