@@ -15,15 +15,57 @@ Digite 'demo()' para demonstrações, 'help()' para o sistema on-line de ajuda,
 ou 'help.start()' para abrir o sistema de ajuda em HTML no seu navegador.
 Digite 'q()' para sair do R.
 
+[Área de trabalho anterior carregada]
+
 > 
 > bla = read.csv("group_size_dt.csv", head = F) 
 > 
-> lambda = mean(1/bla$V1)
-> kkk = hist(bla$V1,breaks=seq(0,max(bla$V1),by=1))
+> bla$V1 = bla$V1
+> 
+> lambda = 1/mean(bla$V1)
+> kkk = hist(bla$V1,breaks=seq(0,max(bla$V1)+1,by=1))
+> 
+> print(1/lambda)
+[1] 6.955525
 > 
 > bla2 = rexp(200000,lambda)
-> kkk2 = hist(bla2,breaks = seq(0,max(bla2),by=1))
-Erro em hist.default(bla2, breaks = seq(0, max(bla2), by = 1)) : 
-  alguns valores de 'x' não computados; talvez 'breaks' não abranja todo o intervalo de 'x'
-Calls: hist -> hist.default
-Execução interrompida
+> kkk2 = hist(bla2,breaks = seq(0,max(bla2)+1,by=1))
+> 
+> a = kkk$density
+> b = kkk2$density
+> 
+> png("group_size1.png")
+> plot(kkk$mids,a,main="PDF",xlab="Group Size")
+> lines(kkk2$mids,b,col="red",lwd=3)
+> dev.off()
+pdf 
+  2 
+> 
+> a = cumsum(kkk$density)
+> b = cumsum(kkk2$density)
+> 
+> png("group_size3.png")
+> plot(kkk$mids,a,main="CDF",xlab="Group Size",type="l")
+> lines(kkk2$mids,b,col="red",lwd=3)
+> dev.off()
+pdf 
+  2 
+> 
+> a = 1-cumsum(kkk$density)
+> b = 1-cumsum(kkk2$density)
+> 
+> png("group_size2.png")
+> plot(kkk$mids,a, main="ECCDF Dartmouth",log="xy",xlab="Group Size",type="l")
+Mensagens de aviso perdidas:
+In xy.coords(x, y, xlabel, ylabel, log) :
+  2 y values <= 0 omitted from logarithmic plot
+> lines(kkk2$mids,b,col="red",lwd=3)
+> dev.off()
+pdf 
+  2 
+> 
+> 
+> 
+> proc.time()
+  usuário   sistema decorrido 
+    0.324     0.020     0.336 

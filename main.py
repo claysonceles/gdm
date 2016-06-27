@@ -21,6 +21,8 @@ magic_number = [500,25, 6,0.5,0.001]
 #socialGraph = soc.readSocialGraph(dataset,n_nodes)
 #soc.plotWeightedCommunities(socialGraph,W_lim,k_clique,n_nodes)
 
+n_groups,groupsRegDistro = readRegularityDistro()
+
 socialGraph = soc.generateGaussian(500,10, 10,0.5,0.002);
 soc.plotUnweightedCommunities(socialGraph,3,400)
 
