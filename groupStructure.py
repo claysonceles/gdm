@@ -84,21 +84,25 @@ def defineGroups(n_nodes, group_size_beta, socialGraph):
 		leader = leaders[i]
 		size = sizes[i]
 		structure = snowball(leader,socialGraph,size)
-		groupsList = groupsList + [[leader,structure]]
+		encounters = meetings[i]
+		groupsList = groupsList + [[leader,structure,encounters]]
 		
 	return groupsList
 
 def printGroups(groups):
 	for i in groups:
-		print
+		print("Leader: " +str(i[0]))
+		print("Structure: " +str(i[1]))
+		print("Encounters: " +str(i[2]))
+		print("")
 
 
 socialGraph = soc.generateGaussian(1200,20, 10,0.5,0.002);
 #socialGraph = soc.readSocialGraph("../../mestrado/datasets2/dartmouth/1200_sample.csv",1200, 2*388800/(9))
-print("graph reading done!")
+#print("graph reading done!")
 
 
 groups = defineGroups(1200,10,socialGraph)
 
-print groups
+printGroups(groups)
 
