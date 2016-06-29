@@ -127,6 +127,6 @@ socialGraph = soc.generateGaussian(1201,20, 10,0.5,0.002);
 
 groups = defineGroups(1200,10,socialGraph)
 
-printGroups(groups)
+#printGroups(groups)
 
 
