@@ -76,7 +76,8 @@ def defineGroupSizes(n_groups, beta):
 def defineGroups(n_nodes, group_size_beta, socialGraph):
 	n_groups,groupsRegDistro = mg.readRegularityDistro()
 	meetings = mg.generateGroupSet(n_groups,groupsRegDistro,30,60)
-
+	endMeeting = mg.generateMeetingDur(n_groups,meetings);
+	#print(teste)
 	leaders = defineGroupLeaders(n_nodes, n_groups)
 	sizes = defineGroupSizes(n_groups, group_size_beta)
 	groupsList = []
@@ -84,20 +85,42 @@ def defineGroups(n_nodes, group_size_beta, socialGraph):
 		leader = leaders[i]
 		size = sizes[i]
 		structure = snowball(leader,socialGraph,size)
+		probabilities = []
+		for j in range(len(structure)):
+			probabilities = probabilities + [willIGo(structure[j],structure,socialGraph)]
+		
 		encounters = meetings[i]
-		groupsList = groupsList + [[leader,structure,encounters]]
+		endEncounter = endMeeting[i]
+		groupsList = groupsList + [[leader,structure,probabilities,encounters,endEncounter]]
 		
 	return groupsList
 
+def willIGo(node_id, group_struct, graph):
+	neighbors = graph.neighbors(node_id)
+	intersection = 1.0*len(list(set(neighbors).intersection(group_struct)))
+	return intersection/(len(group_struct)-1)
+
 def printGroups(groups):
 	for i in groups:
-		print("Leader: " +str(i[0]))
-		print("Structure: " +str(i[1]))
-		print("Encounters: " +str(i[2]))
+		print("Leader: " +str(i[0])+"\n")
+		print("Structure: " +str(i[1])+"\n")
+		print("Probabilities: " +str(i[2])+"\n")		
+		print("Encounters: " +str(i[3])+"\n")
+		print("End of Encounters: " +str(i[4])+"\n")
+		print("Duration:")
+		test = []
+		for j in range(len(i[4])):
+			test = test+[(i[4][j]-i[3][j])]
+		print(test)
 		print("")
 
 
-socialGraph = soc.generateGaussian(1200,20, 10,0.5,0.002);
+def printDurations(groups):
+	for i in groups:
+		for j in range(len(i[2])):
+			print(int(i[3][j]-i[2][j]))
+
+socialGraph = soc.generateGaussian(1201,20, 10,0.5,0.002);
 #socialGraph = soc.readSocialGraph("../../mestrado/datasets2/dartmouth/1200_sample.csv",1200, 2*388800/(9))
 #print("graph reading done!")
 
@@ -105,4 +128,5 @@ socialGraph = soc.generateGaussian(1200,20, 10,0.5,0.002);
 groups = defineGroups(1200,10,socialGraph)
 
 printGroups(groups)
+
 

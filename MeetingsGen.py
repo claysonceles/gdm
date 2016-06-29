@@ -5,11 +5,15 @@ except:
 
 import numpy.random as rd
 import numpy as np
+import HeavyTail as pl
 
 def generateGroupMeetingTimes(first_meeting_time,group_duration,beta,traceDur):	
 #Parameters: <first_meeting time in hours> <period throughout which the group will meet regularly in hours> <average re-meeting period in hours>
 #Generates group meeting times according to a poisson process
 	group_meeting_intervals = rd.normal(beta,2,group_duration/beta)
+	for i in range(len(group_meeting_intervals)):
+		if group_meeting_intervals[i] < 0:
+			group_meeting_intervals[i] = 0;
 	#group_meeting_intervals = [first_meeting_time]+group_meeting_intervals
 	group_meeting_times = []
 	cumsum = 0
@@ -19,7 +23,7 @@ def generateGroupMeetingTimes(first_meeting_time,group_duration,beta,traceDur):
 			group_meeting_times = group_meeting_times + [cumsum]
 		cumsum += group_meeting_intervals[i]
 	for i in range(len(group_meeting_times)):
-		group_meeting_times[i] += first_meeting_time
+		group_meeting_times[i] = (first_meeting_time + group_meeting_times[i])*3600 #converting to seconds
 	return group_meeting_times
 
 def readRegularityDistro():
@@ -83,8 +87,26 @@ def generateGroupSet(n_groups, groupsRegDistro, g_dur, sim_dur):
 #		print(int(all_meetings[i]))
 #	return return_list;
 
-n_groups,groupsRegDistro = readRegularityDistro()
-gSet = generateGroupSet(n_groups,groupsRegDistro,30,60)
-print(len(gSet))
+def generateMeetingDur(n_groups,meetingTimes):
+	meetingsAvgDur = pl.randht(n_groups,'cutoff',600,2.0,1.0/(6*3600));	#duration in seconds
+	endTimes = []
+	for groupEnc in range(len(meetingTimes)):
+		endTime = []
+		durations = rd.normal(meetingsAvgDur[groupEnc],600,len(meetingTimes[groupEnc]))
+		for i in range(len(durations)):
+			if durations[i] < 0:
+				durations[i] = 0
+		for i in range(len(durations)-1):
+			if durations[i] + meetingTimes[groupEnc][i] > meetingTimes[groupEnc][i+1]:
+				durations[i] = meetingTimes[groupEnc][i+1] - meetingTimes[groupEnc][i]
+		for i in range(len(durations)):
+			endTime = endTime + [meetingTimes[groupEnc][i] + durations[i]]
+		endTimes = endTimes+[endTime]
+	return endTimes
+		
+#n_groups,groupsRegDistro = readRegularityDistro()
+#gSet = generateGroupSet(n_groups,groupsRegDistro,30,60)
+#print(len(gSet))
 
+#generateMeetingDur(2800,[]);
 
