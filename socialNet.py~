@@ -79,7 +79,7 @@ def plotWeightedCommunities(G, W_lim, k_clique, n_nodes):
 	plt.savefig("comm_w_"+str(W_lim)+"k"+str(k_clique)+".png") # save as png
 	plt.close()
 	
-def plotUnweightedCommunities(G, k_clique, n_nodes):
+def plotUnweightedCommunities(G, k_clique, n_nodes,iw):
 
 	cls = nx.find_cliques(G)
 	communities = list(nx.k_clique_communities(G,k_clique ,cliques = cls))
@@ -103,7 +103,7 @@ def plotUnweightedCommunities(G, k_clique, n_nodes):
 	nx.draw_networkx_labels(G,pos,font_size=10,font_family='sans-serif')
 
 	plt.axis('off')
-	plt.savefig("unweighted_"+"comm_"+"k"+str(k_clique)+".png") # save as png
+	plt.savefig("./comm/unweighted_"+"comm_"+"w"+str(i)+"k"+str(k_clique)+".png") # save as png
 	plt.close()
 
 

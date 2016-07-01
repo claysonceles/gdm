@@ -96,6 +96,8 @@ def defineGroups(n_nodes, group_size_beta, socialGraph):
 	return groupsList
 
 def willIGo(node_id, group_struct, graph):
+	if len(group_struct) <= 1:
+		return 0;
 	neighbors = graph.neighbors(node_id)
 	intersection = 1.0*len(list(set(neighbors).intersection(group_struct)))
 	return intersection/(len(group_struct)-1)
@@ -120,12 +122,12 @@ def printDurations(groups):
 		for j in range(len(i[2])):
 			print(int(i[3][j]-i[2][j]))
 
-socialGraph = soc.generateGaussian(1201,20, 10,0.5,0.002);
+#socialGraph = soc.generateGaussian(1201,20, 10,0.5,0.002);
 #socialGraph = soc.readSocialGraph("../../mestrado/datasets2/dartmouth/1200_sample.csv",1200, 2*388800/(9))
 #print("graph reading done!")
 
 
-groups = defineGroups(1200,10,socialGraph)
+#groups = defineGroups(1200,10,socialGraph)
 
 #printGroups(groups)
 

@@ -48,47 +48,9 @@ def generateGroupSet(n_groups, groupsRegDistro, g_dur, sim_dur):
 			groupSet = groupSet + [newGroup]
 	return groupSet
 
-
-#def generateGroupSet(n_groups,g_dur):
-#	all_meetings = []
-#	for i in range(n_groups):
-#		beta = 24#*rd.exponential(3) #FRIENDS
-#		newgroup = generateGroupMeetingTimes(0,g_dur*24,beta);
-#		all_meetings = all_meetings + newgroup
-#	for i in range(n_groups/2):
-#		beta = 7*24#*rd.exponential(3) #COLEAGES
-#		newgroup = generateGroupMeetingTimes(0,g_dur*24,beta);
-#		all_meetings = all_meetings + newgroup
-
-#	for i in range(n_groups/6):
-#		beta = 2*24#*rd.exponential(3) #COLEAGES
-#		newgroup = generateGroupMeetingTimes(0,g_dur*24,beta);
-#		all_meetings = all_meetings + newgroup
-
-#	for i in range(n_groups/6):
-#		beta = 3*24#*rd.exponential(3) #COLEAGES
-#		newgroup = generateGroupMeetingTimes(0,g_dur*24,beta);
-#		all_meetings = all_meetings + newgroup
-
-#	for i in range(n_groups/6):
-#		beta = 5*24#*rd.exponential(3) #COLEAGES
-#		newgroup = generateGroupMeetingTimes(0,g_dur*24,beta);
-#		all_meetings = all_meetings + newgroup
-
-#	for i in range(n_groups/3):
-#		beta = 24/6#*rd.exponential(3) #HOUSEMATES
-#		newgroup = generateGroupMeetingTimes(0,g_dur*24,beta);
-#		all_meetings = all_meetings + newgroup
-#
-#	return_list = []
-#	for i in range(len(all_meetings)):
-#		return_list = return_list + [int(all_meetings[i])]
-#	for i in range(len(all_meetings)):
-#		print(int(all_meetings[i]))
-#	return return_list;
-
 def generateMeetingDur(n_groups,meetingTimes):
-	meetingsAvgDur = pl.randht(n_groups,'cutoff',600,2.0,1.0/(6*3600));	#duration in seconds
+	meetingsAvgDur = pl.randht(n_groups,'cutoff',600,2,1.0/(30*24*3600));	#duration in seconds
+	#meetingsAvgDur = pl.randht(n_groups,'powerlaw',600,3);	#duration in seconds
 	endTimes = []
 	for groupEnc in range(len(meetingTimes)):
 		endTime = []
@@ -104,9 +66,4 @@ def generateMeetingDur(n_groups,meetingTimes):
 		endTimes = endTimes+[endTime]
 	return endTimes
 		
-#n_groups,groupsRegDistro = readRegularityDistro()
-#gSet = generateGroupSet(n_groups,groupsRegDistro,30,60)
-#print(len(gSet))
-
-#generateMeetingDur(2800,[]);
 

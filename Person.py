@@ -33,7 +33,16 @@ def scheduleConflict(schedule, newMeeting):
 			break;
 	return flag
 
-def mySchedule(node_id, groups):
+def insOrdSchedule(schedule,newMeeting):
+	if schedule == []:
+		return [newMeeting]
+	if newMeeting[1][0] < schedule[0][1][0]:
+		return [newMeeting] + schedule
+	else:
+		return [schedule[0]] + insOrdSchedule(schedule[1:],newMeeting)
+		
+
+def mySchedule(node_id, groups):	#TODO: Efficiency may be improved here
 	schedule = []
 	index = -1
 	for i in range(len(groups)):
@@ -48,19 +57,45 @@ def mySchedule(node_id, groups):
 			for k in range(len(groups[i][ENC])):
 				coin = (rd.randint(0,100000000)*1.0)/100000000
 				if prob > coin and not(scheduleConflict(schedule,[groups[i][ENC][k],groups[i][END_ENC][k]])) :
-					schedule = schedule+[[i,[groups[i][ENC][k],groups[i][END_ENC][k]]]]
+					schedule = insOrdSchedule(schedule,[i,[groups[i][ENC][k],groups[i][END_ENC][k]]])
 					#TODO: modificar tempo de permanencia individual no encontro.	
 	return schedule
 
-socialGraph = soc.generateGaussian(1201,20, 10,0.5,0.002);
+def allNodesSchedule(n_nodes,groups):
+	nodesSchedule = []
+	for i in range(n_nodes):
+		a =  mySchedule(i,groups)
+		nodesSchedule =  nodesSchedule + [a]
+	return nodesSchedule		
 
-groups = gs.defineGroups(1200,10,socialGraph)
+def printNodesSchedule(nodesSchedule):
+	for i in range(len(nodesSchedule)):
+		for j in range(len(nodesSchedule[i])):
+			print(str(i)+" "+str(nodesSchedule[i][j][0])+" "+str(int(nodesSchedule[i][j][1][0]))+" "+str(int(nodesSchedule[i][j][1][1])))
 
-#gs.printGroups(groups)
+def insOrd(schedule,newMeeting):
+	if schedule == []:
+		return [newMeeting]
+	if newMeeting < schedule[0]:
+		return [newMeeting] + schedule
+	else:
+		return [schedule[0]] + insOrd(schedule[1:],newMeeting)
 
-#print "oi"
+def sort(lista):
+	listaOrd = []
+	for i in lista:
+		listaOrd = insOrd(listaOrd,i)
+	return listaOrd
 
-for i in range(1200):
-	print(i)
-	print(mySchedule(i,groups))
-	print('\n')
+
+
+#socialGraph = soc.generateGaussian(1201,20, 10,0.5,0.002);
+#socialGraph = soc.readSocialGraph("../../mestrado/datasets2/dartmouth/1200_sample.csv",1200, 2*388800/(9))
+
+#groups = gs.defineGroups(1199,10,socialGraph)
+
+#nodesSchedule = allNodesSchedule(1200,groups)
+
+#printNodesSchedule(nodesSchedule)
+
+#printNodesSchedule(nodesSchedule)
