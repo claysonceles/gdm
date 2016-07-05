@@ -9,8 +9,10 @@ import random
 import sys
 import socialNet as soc
 import MeetingsGen as mg
+import HeavyTail as pl
 
-def snowball(center,graph, maxNodes):
+
+def fixedSnowball(center,graph, maxNodes):
 	members = [center]
 	iterator = 0
 	while len(members) < maxNodes and iterator < len(members):
@@ -21,6 +23,20 @@ def snowball(center,graph, maxNodes):
 			return members[0:maxNodes]
 		iterator+=1
 	return members
+
+def snowball(center,graph, maxNodes):
+	members = [center]
+	iterator = 0
+	while len(members) < maxNodes and iterator < len(members):
+		randomizedNeighbors = list(rd.permutation(graph.neighbors(members[iterator])))
+		for i in graph.neighbors(members[iterator]):
+			if not (i in members):
+				members = members + [i]
+		if len(members) > maxNodes:
+			return members[0:maxNodes]
+		iterator+=1
+	return members
+
 	
 def plotSnowball(G, snowball,num):
 
@@ -66,11 +82,12 @@ def defineGroupLeaders(n_nodes,n_groups): #selects group leaders with uniform di
 
 def defineGroupSizes(n_groups, beta):
 	sizes = []
-	i = 0
-	while i < n_groups:
-		sample = int(rd.exponential(beta))+2
-		sizes = sizes + [sample]
-		i+=1
+	#sample = pl.randht(n_groups,'cutoff',3,2,1.0/(beta));
+	sample = rd.exponential(beta,n_groups)
+	for i in sample:
+		sizes = sizes + [int(i)]
+
+	print(sizes)
 	return sizes
 
 def defineGroups(n_nodes, group_size_beta, socialGraph):

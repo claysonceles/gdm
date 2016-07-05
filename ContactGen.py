@@ -21,7 +21,7 @@ END_ENC = 4
 def ajustNodesSchedule(nodesSchedule):
 	ajusted = []
 	for i in range(len(nodesSchedule)):
-		print("ajust: "+str(i)+" "+str(len(nodesSchedule[i])))
+		print("adjust: "+str(i)+" "+str(len(nodesSchedule[i])))
 		for j in range(len(nodesSchedule[i])):
 			ajusted = ajusted + [[i,nodesSchedule[i][j][0], int(nodesSchedule[i][j][1][0]),int(nodesSchedule[i][j][1][1])]]
 	return ajusted
@@ -80,29 +80,30 @@ def generateContacts(nodesSchedule):
 			group = [nodesSchedule[i]]
 			
 		group_ant = nodesSchedule[i][1]
-	#contacts.sort(key=lambda x: x[2])
+	contacts.sort(key=lambda x: x[2])
 	for i in range(len(contacts)):
 		if contacts[i][3] > 0:
 			f.write(str(contacts[i][0])+" "+str(contacts[i][1])+" "+str(contacts[i][2])+" "+str(contacts[i][3])+"\n")
 	f.close()
 
 
-#socialGraph = soc.generateGaussian(1200,20, 10,0.5,0.002);
-#socialGraph = soc.generateGaussian(1200,20, 10,0.7,0.02);
-#socialGraph = soc.readSocialGraph("../../mestrado/datasets2/dartmouth/1200_sample.csv",1200, 2*388800/(9))
-#print("Social Graph Generated")
-#print("Ploting Communities in Input Graph")
-#groups = gs.defineGroups(1199,10,socialGraph)
-#print("Groups Defined")
-#nodesSchedule = per.allNodesSchedule(1200,groups)
-#print("Nodes Schedule Defined")
-#generateContacts(nodesSchedule)
-for i in range(2,20):
-	for j in range (3,20):
+#socialGraph = soc.generateGaussian(1200,100, 20,0.5,0.002);
+#socialGraph = soc.generateGaussian(1200,20, 10,0.7,0.05);
+socialGraph = soc.readSocialGraph("../../mestrado/datasets2/dartmouth/1200_sample.csv",1200, 1*3600)
+print("Social Graph Generated")
+groups = gs.defineGroups(1199,10,socialGraph)
+print("Groups Defined")
+nodesSchedule = per.allNodesSchedule(1200,groups)
+print("Nodes Schedule Defined")
+generateContacts(nodesSchedule)
+for i in range(3,20):
+	for j in range (2,12):
 		print("Contacts Generated")
-		G = soc.readSocialGraph("contacts.csv",1200, i*3600)
+		G = soc.readSocialGraph("contacts.csv",1200, j*3600)
 		print("Reading Contacts")
-		soc.plotUnweightedCommunities(G, j, 1200,i)
+		soc.plotUnweightedCommunities(G, i, 1200,j)
+		print("w,k:")
+		print(i,j)
 		print("Ploting Communities in Synthetic Graph")
 
 
